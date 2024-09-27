@@ -1,4 +1,4 @@
-const BASE_URL = "https://task-management-api-weld.vercel.app/api";
+const BASE_URL = "https://task-management-api-gilt.vercel.app/api";
 
 function getAccessToken() {
   return localStorage.getItem("accessToken");
