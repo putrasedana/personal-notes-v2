@@ -16,10 +16,28 @@ const LoginInput = ({ login }) => {
   return (
     <form onSubmit={onSubmitHandler} className="input-login">
       <label htmlFor="email">{locale === "en" ? "Surel" : "Email"}</label>
-      <input type="email" id="email" value={email} onChange={onEmailChange} placeholder={locale === "en" ? "Masukkan surel Anda" : "Enter your email"} />
+      <input
+        type="email"
+        id="email"
+        value={email}
+        onChange={onEmailChange}
+        placeholder={
+          locale === "en" ? "Masukkan surel Anda" : "Enter your email"
+        }
+      />
 
-      <label htmlFor="password">{locale === "en" ? "Kata Sandi" : "Password"}</label>
-      <input type="password" id="password" value={password} onChange={onPasswordChange} placeholder={locale === "en" ? "Masukkan kata sandi Anda" : "Enter your password"} />
+      <label htmlFor="password">
+        {locale === "en" ? "Kata Sandi" : "Password"}
+      </label>
+      <input
+        type="password"
+        id="password"
+        value={password}
+        onChange={onPasswordChange}
+        placeholder={
+          locale === "en" ? "Masukkan kata sandi Anda" : "Enter your password"
+        }
+      />
 
       <button type="submit">{locale === "en" ? "Masuk" : "Login"}</button>
     </form>

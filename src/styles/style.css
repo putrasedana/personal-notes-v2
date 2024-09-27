@@ -50,6 +50,7 @@ header {
 
 header h1 {
   flex: 1;
+  font-size: 1.8rem;
 }
 
 header .navigation ul li {
@@ -65,7 +66,7 @@ main {
   max-width: 1200px;
 }
 
-.notes-list {
+.tasks-list {
   margin-top: 32px;
   display: grid;
   grid-template-columns: 1fr;
@@ -73,16 +74,16 @@ main {
   padding: 16px 8px;
 }
 
-.notes-list-empty {
+.tasks-list-empty {
   margin-top: 32px;
   padding: 16px 8px;
 }
 
-.notes-list-empty p {
+.tasks-list-empty p {
   text-align: center;
   color: var(--on-background-grey);
 }
-.note-item {
+.task-item {
   padding: 16px;
   border-radius: 8px;
   border: 1px solid var(--on-background);
@@ -90,26 +91,42 @@ main {
   word-break: break-word;
 }
 
-.note-item__title {
+.task-item__title {
   margin: 4px 0;
 }
 
-.note-item__createdAt {
+.task-item__createdAt {
   color: var(--on-background-grey);
-  font-size: 14px;
-  margin: 4px 0;
+  font-size: 12px;
+  margin-top: 6px;
 }
 
-.note-item__body {
-  margin-top: 16px;
+.task-item__status {
+  display: flex;
+  align-items: center;
+}
+
+.task-item__status-dot {
+  font-size: 1.8rem;
+  padding-bottom: 4px;
+  margin-right: 4px;
+}
+
+.task-item__body {
   overflow: hidden;
   display: -webkit-box;
   text-overflow: ellipsis;
-  -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
 }
 
-.detail-page {
+.task-detail__status {
+  display: flex;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.detail-page,
+.edit-page {
   margin: 0 auto;
   margin-top: 32px;
   width: 90%;
@@ -123,11 +140,12 @@ main {
 
 .detail-page__createdAt {
   color: var(--on-background-grey);
+  margin-bottom: 10px;
 }
 
 .detail-page__body {
   line-height: 1.5;
-  margin-top: 36px;
+  margin-top: 10px;
   font-size: 18px;
 }
 
@@ -156,11 +174,13 @@ main {
   cursor: pointer;
 }
 
-.add-new-page__input {
+.add-new-page__input,
+.edit-page__input {
   margin-top: 32px;
 }
 
-.add-new-page__input .add-new-page__input__title {
+.add-new-page__input .add-new-page__input__title,
+.edit-page__input .edit-page__input__title {
   width: 100%;
   background-color: transparent;
   border: 0;
@@ -175,7 +195,8 @@ main {
   color: var(--on-background-grey);
 }
 
-.add-new-page__input .add-new-page__input__body {
+.add-new-page__input .add-new-page__input__body,
+.edit-page__input .edit-page__input__body {
   width: 100%;
   background-color: transparent;
   border: 0;
@@ -189,6 +210,25 @@ main {
 [data-placeholder]:empty::before {
   content: attr(data-placeholder);
   color: var(--on-background-grey);
+}
+
+.edit-page__input__status {
+  width: 50%;
+  padding: 0px 0 10px;
+  margin: 20px 0;
+  border: none;
+  border-bottom: 1px solid #aaa;
+  border-radius: 5px;
+  font-size: 24px;
+  background-color: var(--background);
+}
+
+.edit-page__input__status:focus {
+  outline: none;
+}
+
+.edit-page__input__status option {
+  padding: 10px;
 }
 
 .search-bar input {
@@ -278,28 +318,6 @@ main {
   margin: 0 16px;
 }
 
-@media screen and (min-width: 650px) {
-  .notes-list {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .detail-page__title {
-    font-size: 64px;
-  }
-}
-
-@media screen and (min-width: 850px) {
-  .notes-list {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media screen and (min-width: 1200px) {
-  .notes-list {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
 .loading {
   display: flex;
   justify-content: center;
@@ -333,4 +351,47 @@ main {
 .not-found__link {
   font-size: 1.2rem;
   color: #fff;
+}
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip-text {
+  width: 90px;
+  font-size: 0.6rem;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 5px;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@media screen and (min-width: 650px) {
+  .tasks-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .detail-page__title {
+    font-size: 64px;
+  }
+}
+
+@media screen and (min-width: 850px) {
+  .tasks-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .tasks-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }

@@ -10,7 +10,9 @@ function Header({ logout, name }) {
   return (
     <header>
       <h1>
-        <Link to="/">{locale === "id" ? "Notes App" : "Aplikasi Catatan"}</Link>
+        <Link to="/">
+          {locale === "id" ? "Task Management App" : "Aplikasi Manajemen Tugas"}
+        </Link>
       </h1>
       <Navigation logout={logout} name={name} />
     </header>

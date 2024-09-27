@@ -11,7 +11,15 @@ function SearchBar({ onSearch, query }) {
 
   return (
     <section className="search-bar">
-      <input className="search-bar" type="text" placeholder={locale === "en" ? "Cari berdasarkan judul ..." : "Search by title ..."} value={query} onChange={handleSearchChange} />
+      <input
+        className="search-bar"
+        type="text"
+        placeholder={
+          locale === "en" ? "Cari berdasarkan judul ..." : "Search by title ..."
+        }
+        value={query}
+        onChange={handleSearchChange}
+      />
     </section>
   );
 }
