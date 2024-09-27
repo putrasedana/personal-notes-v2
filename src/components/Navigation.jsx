@@ -16,7 +16,9 @@ function Navigation({ logout, name }) {
         <nav className="navigation">
           <ul>
             <li>
-              <Link to="/archives"> {locale === "id" ? "Archived" : "Terarsip"}</Link>
+              <Link to="/archives">
+                {locale === "id" ? "Archived" : "Terarsip"}
+              </Link>
             </li>
           </ul>
         </nav>

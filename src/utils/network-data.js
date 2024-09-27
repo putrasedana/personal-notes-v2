@@ -1,4 +1,4 @@
-const BASE_URL = "https://notes-api.dicoding.dev/v1";
+const BASE_URL = "https://task-management-api-weld.vercel.app/api";
 
 function getAccessToken() {
   return localStorage.getItem("accessToken");
@@ -38,6 +38,8 @@ async function login({ email, password }) {
 }
 
 async function register({ name, email, password }) {
+  console.log(name, email, password);
+
   const response = await fetch(`${BASE_URL}/register`, {
     method: "POST",
     headers: {
@@ -58,6 +60,7 @@ async function register({ name, email, password }) {
 
 async function getUserLogged() {
   const response = await fetchWithToken(`${BASE_URL}/users/me`);
+
   const responseJson = await response.json();
 
   if (responseJson.status !== "success") {
@@ -67,8 +70,8 @@ async function getUserLogged() {
   return { error: false, data: responseJson.data };
 }
 
-async function addNote({ title, body }) {
-  const response = await fetchWithToken(`${BASE_URL}/notes`, {
+async function addTask({ title, body }) {
+  const response = await fetchWithToken(`${BASE_URL}/tasks`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -85,8 +88,8 @@ async function addNote({ title, body }) {
   return { error: false, data: responseJson.data };
 }
 
-async function getActiveNotes() {
-  const response = await fetchWithToken(`${BASE_URL}/notes`);
+async function getActiveTasks() {
+  const response = await fetchWithToken(`${BASE_URL}/tasks`);
   const responseJson = await response.json();
 
   if (responseJson.status !== "success") {
@@ -96,8 +99,8 @@ async function getActiveNotes() {
   return { error: false, data: responseJson.data };
 }
 
-async function getArchivedNotes() {
-  const response = await fetchWithToken(`${BASE_URL}/notes/archived`);
+async function getArchivedTasks() {
+  const response = await fetchWithToken(`${BASE_URL}/tasks/archived`);
   const responseJson = await response.json();
 
   if (responseJson.status !== "success") {
@@ -107,8 +110,8 @@ async function getArchivedNotes() {
   return { error: false, data: responseJson.data };
 }
 
-async function getNote(id) {
-  const response = await fetchWithToken(`${BASE_URL}/notes/${id}`);
+async function getTask(id) {
+  const response = await fetchWithToken(`${BASE_URL}/tasks/${id}`);
   const responseJson = await response.json();
 
   if (responseJson.status !== "success") {
@@ -118,8 +121,8 @@ async function getNote(id) {
   return { error: false, data: responseJson.data };
 }
 
-async function archiveNote(id) {
-  const response = await fetchWithToken(`${BASE_URL}/notes/${id}/archive`, {
+async function archiveTask(id) {
+  const response = await fetchWithToken(`${BASE_URL}/tasks/${id}/archive`, {
     method: "POST",
   });
 
@@ -132,8 +135,8 @@ async function archiveNote(id) {
   return { error: false, data: responseJson.data };
 }
 
-async function unarchiveNote(id) {
-  const response = await fetchWithToken(`${BASE_URL}/notes/${id}/unarchive`, {
+async function unarchiveTask(id) {
+  const response = await fetchWithToken(`${BASE_URL}/tasks/${id}/unarchive`, {
     method: "POST",
   });
 
@@ -146,8 +149,8 @@ async function unarchiveNote(id) {
   return { error: false, data: responseJson.data };
 }
 
-async function deleteNote(id) {
-  const response = await fetchWithToken(`${BASE_URL}/notes/${id}`, {
+async function deleteTask(id) {
+  const response = await fetchWithToken(`${BASE_URL}/tasks/${id}`, {
     method: "DELETE",
   });
 
@@ -160,4 +163,36 @@ async function deleteNote(id) {
   return { error: false, data: responseJson.data };
 }
 
-export { getAccessToken, putAccessToken, login, register, getUserLogged, addNote, getActiveNotes, getArchivedNotes, getNote, archiveNote, unarchiveNote, deleteNote };
+async function editTask(id, updatedTask) {
+  const response = await fetchWithToken(`${BASE_URL}/tasks/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(updatedTask),
+  });
+
+  const responseJson = await response.json();
+
+  if (responseJson.status !== "success") {
+    return { error: true, data: null, message: responseJson.message };
+  }
+
+  return { error: false, data: responseJson.data };
+}
+
+export {
+  getAccessToken,
+  putAccessToken,
+  login,
+  register,
+  getUserLogged,
+  addTask,
+  getActiveTasks,
+  getArchivedTasks,
+  getTask,
+  archiveTask,
+  unarchiveTask,
+  deleteTask,
+  editTask,
+};

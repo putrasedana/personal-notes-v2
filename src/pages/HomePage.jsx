@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import SearchBar from "../components/SearchBar";
-import NotesList from "../components/NotesList";
+import TasksList from "../components/TasksList";
 import { FiPlus } from "react-icons/fi";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 import LocaleContext from "../contexts/LocaleContext";
+import Tooltip from "../components/Tooltip";
 
-function HomePage({ notes, loading }) {
+function HomePage({ tasks, loading }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchQuery, setSearchQuery] = useState(searchParams.get("query") || "");
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get("query") || ""
+  );
   const location = useLocation();
   const isArchivePage = location.pathname.includes("/archive");
-  const filteredNotes = notes.filter((note) => note.title.toLowerCase().includes(searchQuery.toLowerCase()));
+  const filteredTasks = tasks.filter((task) =>
+    task.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   const { locale } = React.useContext(LocaleContext);
 
   useEffect(() => {
@@ -20,14 +25,24 @@ function HomePage({ notes, loading }) {
 
   return (
     <section>
-      <h2>{isArchivePage ? (locale === "en" ? "Catatan Arsip" : "Archived Notes") : locale === "en" ? "Catatan Aktif" : "Active Notes"}</h2>
+      <h2>
+        {isArchivePage
+          ? locale === "en"
+            ? "Tugas Terarsip"
+            : "Archived Tasks"
+          : locale === "en"
+          ? "Tugas Aktif"
+          : "Active Tasks"}
+      </h2>
       <SearchBar onSearch={setSearchQuery} query={searchQuery} />
-      <NotesList notes={filteredNotes} loading={loading} />
+      <TasksList tasks={filteredTasks} loading={loading} />
       {!isArchivePage && (
         <div className="homepage__action">
-          <Link to="/notes/new" className="action">
-            <FiPlus />
-          </Link>
+          <Tooltip text="Add button">
+            <Link to="/tasks/new" className="action">
+              <FiPlus />
+            </Link>
+          </Tooltip>
         </div>
       )}
     </section>
@@ -36,7 +51,7 @@ function HomePage({ notes, loading }) {
 
 HomePage.propTypes = {
   loading: PropTypes.bool.isRequired,
-  notes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default HomePage;

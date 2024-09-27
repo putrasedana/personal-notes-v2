@@ -2,7 +2,12 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import AddPage from "./pages/AddPage";
-import { getActiveNotes, getArchivedNotes, getUserLogged, putAccessToken } from "./utils/network-data.js";
+import {
+  getActiveTasks,
+  getArchivedTasks,
+  getUserLogged,
+  putAccessToken,
+} from "./utils/network-data.js";
 import DetailPage from "./pages/DetailPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/LoginPage.jsx";
@@ -10,9 +15,10 @@ import RegisterPage from "./pages/RegisterPage.jsx";
 import ThemeContext from "./contexts/ThemeContext.js";
 import LocaleContext from "./contexts/LocaleContext.js";
 import Header from "./components/Header.jsx";
+import EditPage from "./pages/EditPage.jsx";
 
 function App() {
-  const [notes, setNotes] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const [authedUser, setAuthedUser] = useState(null);
   const [initializing, setInitializing] = useState(true);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -30,15 +36,15 @@ function App() {
 
   useEffect(() => {
     if (authedUser !== null) {
-      const fetchNotes = async () => {
+      const fetchTasks = async () => {
         try {
           setLoading(true);
-          const { data: activeNotes } = await getActiveNotes();
-          const { data: archivedNotes } = await getArchivedNotes();
+          const { data: activeTasks } = await getActiveTasks();
+          const { data: archivedTasks } = await getArchivedTasks();
 
-          const allNotes = [...activeNotes, ...archivedNotes];
+          const allTasks = [...activeTasks, ...archivedTasks];
 
-          setNotes(allNotes);
+          setTasks(allTasks);
         } catch (err) {
           console.error("An unexpected error occurred:", err);
         } finally {
@@ -46,19 +52,19 @@ function App() {
         }
       };
 
-      fetchNotes();
+      fetchTasks();
     }
   }, [authedUser]);
 
-  const refreshNotes = async () => {
+  const refreshTasks = async () => {
     try {
       setLoading(true);
-      const { data: activeNotes } = await getActiveNotes();
-      const { data: archivedNotes } = await getArchivedNotes();
-      const allNotes = [...activeNotes, ...archivedNotes];
-      setNotes(allNotes);
+      const { data: activeTasks } = await getActiveTasks();
+      const { data: archivedTasks } = await getArchivedTasks();
+      const allTasks = [...activeTasks, ...archivedTasks];
+      setTasks(allTasks);
     } catch (err) {
-      console.error("Failed to refresh notes:", err);
+      console.error("Failed to refresh tasks:", err);
     } finally {
       setLoading(false);
     }
@@ -121,7 +127,10 @@ function App() {
             <Header logout={onLogout} name="" />
             <main>
               <Routes>
-                <Route path="/*" element={<LoginPage loginSuccess={onLoginSuccess} />} />
+                <Route
+                  path="/*"
+                  element={<LoginPage loginSuccess={onLoginSuccess} />}
+                />
                 <Route path="/register" element={<RegisterPage />} />
               </Routes>
             </main>
@@ -138,10 +147,44 @@ function App() {
           <Header logout={onLogout} name={authedUser.name} />
           <main>
             <Routes>
-              <Route path="/" element={<HomePage notes={notes.filter((note) => !note.archived)} loading={loading} />} />
-              <Route path="/archives" element={<HomePage notes={notes.filter((note) => note.archived)} loading={loading} />} />
-              <Route path="/note/:id" element={<DetailPage notes={notes} refreshNotes={refreshNotes} />} />
-              <Route path="/notes/new" element={<AddPage owner={authedUser.name} refreshNotes={refreshNotes} setNotes={setNotes} />} />
+              <Route
+                path="/"
+                element={
+                  <HomePage
+                    tasks={tasks.filter((task) => !task.archived)}
+                    loading={loading}
+                  />
+                }
+              />
+              <Route
+                path="/archives"
+                element={
+                  <HomePage
+                    tasks={tasks.filter((task) => task.archived)}
+                    loading={loading}
+                  />
+                }
+              />
+              <Route
+                path="/task/:id"
+                element={
+                  <DetailPage tasks={tasks} refreshTasks={refreshTasks} />
+                }
+              />
+              <Route
+                path="/tasks/new"
+                element={
+                  <AddPage
+                    owner={authedUser.name}
+                    refreshTasks={refreshTasks}
+                    setTasks={setTasks}
+                  />
+                }
+              />
+              <Route
+                path="/edit/:id"
+                element={<EditPage refreshTasks={refreshTasks} tasks={tasks} />}
+              />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>

@@ -1,30 +1,30 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { addNote } from "../utils/network-data";
-import NoteInput from "../components/NoteInput";
+import { addTask } from "../utils/network-data";
+import TaskInput from "../components/TaskInput";
 import PropTypes from "prop-types";
 
-function AddPage({ owner, refreshNotes, setNotes }) {
+function AddPage({ owner, refreshTasks, setTasks }) {
   const navigate = useNavigate();
 
-  async function onAddNoteHandler(note) {
-    addNote(note);
-    setNotes((prevNotes) => [...prevNotes, note]);
+  async function onAddTaskHandler(task) {
+    addTask(task);
+    setTasks((prevTasks) => [...prevTasks, task]);
     navigate("/");
-    await refreshNotes();
+    await refreshTasks();
   }
 
   return (
     <section>
-      <NoteInput owner={owner} addNote={onAddNoteHandler} />
+      <TaskInput owner={owner} addTask={onAddTaskHandler} />
     </section>
   );
 }
 
 AddPage.propTypes = {
   owner: PropTypes.string.isRequired,
-  refreshNotes: PropTypes.func.isRequired,
-  setNotes: PropTypes.func.isRequired,
+  refreshTasks: PropTypes.func.isRequired,
+  setTasks: PropTypes.func.isRequired,
 };
 
 export default AddPage;

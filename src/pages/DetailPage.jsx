@@ -1,40 +1,49 @@
 import React from "react";
 import PropTypes from "prop-types";
-import NoteDetail from "../components/NoteDetail";
-import { archiveNote, deleteNote, unarchiveNote } from "../utils/network-data";
+import TaskDetail from "../components/TaskDetail";
+import { archiveTask, deleteTask, unarchiveTask } from "../utils/network-data";
 import LocaleContext from "../contexts/LocaleContext";
 
-function DetailPage({ notes, refreshNotes }) {
+function DetailPage({ tasks, refreshTasks }) {
   const { locale } = React.useContext(LocaleContext);
 
   const handleDelete = async (id) => {
-    const confirmed = window.confirm(locale === "en" ? "Apakah Anda yakin ingin menghapus catatan ini?" : "Are you sure you want to delete this note?");
+    const confirmed = window.confirm(
+      locale === "en"
+        ? "Apakah Anda yakin ingin menghapus catatan ini?"
+        : "Are you sure you want to delete this task?"
+    );
     if (confirmed) {
-      await deleteNote(id);
-      await refreshNotes();
+      await deleteTask(id);
+      await refreshTasks();
     }
   };
 
   const handleArchive = async (id) => {
-    await archiveNote(id);
-    await refreshNotes();
+    await archiveTask(id);
+    await refreshTasks();
   };
 
   const handleUnarchive = async (id) => {
-    await unarchiveNote(id);
-    await refreshNotes();
+    await unarchiveTask(id);
+    await refreshTasks();
   };
 
   return (
     <section>
-      <NoteDetail notes={notes} onDelete={handleDelete} onArchive={handleArchive} onUnarchive={handleUnarchive} />
+      <TaskDetail
+        tasks={tasks}
+        onDelete={handleDelete}
+        onArchive={handleArchive}
+        onUnarchive={handleUnarchive}
+      />
     </section>
   );
 }
 
 DetailPage.propTypes = {
-  notes: PropTypes.arrayOf(PropTypes.object).isRequired,
-  refreshNotes: PropTypes.func.isRequired,
+  tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
+  refreshTasks: PropTypes.func.isRequired,
 };
 
 export default DetailPage;
