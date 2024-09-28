@@ -1,4 +1,5 @@
-const BASE_URL = "https://task-management-api-gilt.vercel.app/api";
+const BASE_URL =
+  "https://task-management-api-production-288a.up.railway.app/api";
 // const BASE_URL = "http://localhost:8000/api";
 
 function getAccessToken() {
