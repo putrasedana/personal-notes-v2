@@ -11,7 +11,7 @@ function Navigation({ logout, name }) {
   const { locale, toggleLocale } = React.useContext(LocaleContext);
 
   return (
-    <>
+    <div className="nav-container">
       {name && (
         <nav className="navigation">
           <ul>
@@ -37,7 +37,7 @@ function Navigation({ logout, name }) {
           <FiLogOut /> {name}
         </button>
       )}
-    </>
+    </div>
   );
 }
 

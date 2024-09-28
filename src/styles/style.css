@@ -42,21 +42,26 @@ body {
 
 header {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   padding: 16px;
   border-bottom: 1px solid var(--on-background);
 }
 
 header h1 {
   flex: 1;
-  font-size: 1.8rem;
+  font-size: 1.4rem;
 }
 
 header .navigation ul li {
   display: inline-block;
   font-size: 24px;
-  margin: 0 16px;
+  margin: 0 16px 0 0;
+}
+
+.nav-container {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
 }
 
 main {
@@ -186,7 +191,7 @@ main {
   border: 0;
   color: var(--on-background);
   font-family: "Inter", sans-serif;
-  font-size: 64px;
+  font-size: 48px;
   font-weight: bold;
   padding: 8px 0;
 }
@@ -312,7 +317,7 @@ main {
   gap: 8px;
   background-color: transparent;
   border: 0;
-  font-size: 28px;
+  font-size: 1rem;
   cursor: pointer;
   color: var(--on-background);
   margin: 0 16px;
@@ -378,19 +383,38 @@ main {
   .tasks-list {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  .detail-page__title {
-    font-size: 64px;
-  }
 }
 
-@media screen and (min-width: 850px) {
+@media screen and (min-width: 750px) {
   .tasks-list {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  header .navigation ul li {
+    margin: 0 16px 0 16px;
+  }
+
+  .button-logout {
+    font-size: 1.4rem;
+  }
+
+  .nav-container {
+    margin-top: 0rem;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
   }
 }
 
 @media screen and (min-width: 1200px) {
+  header h1 {
+    font-size: 1.8rem;
+  }
+
   .tasks-list {
     grid-template-columns: repeat(4, 1fr);
   }
